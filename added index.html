@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swastik Library</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #2E7D32;
+            --accent-color: #FFC107;
+            --dark-color: #333;
+            --light-color: #f5f5f5;
+            --danger-color: #f44336;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+        }
+        
+        .youtube-channel {
+            background-color: var(--danger-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        .youtube-channel i {
+            margin-right: 8px;
+        }
+        
+        .youtube-channel:hover {
+            background-color: #d32f2f;
+        }
+        
+        nav {
+            background-color: var(--secondary-color);
+            padding: 10px 0;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+        }
+        
+        nav ul li {
+            margin: 0 15px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        .main-content {
+            padding: 30px 0;
+            min-height: 70vh;
+        }
+        
+        .login-section, .register-section, .admin-section, .student-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+            display: none;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary {
+            background-color: #757575;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #616161;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+        
+        .message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .success {
+            background-color: #C8E6C9;
+            color: #2E7D32;
+        }
+        
+        .error {
+            background-color: #FFCDD2;
+            color: #C62828;
+        }
+        
+        .home-content {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .home-content h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .home-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+        
+        .feature-card i {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 5px 10px;
+            font-size: 14px;
+            width: auto;
+        }
+        
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+        }
+        
+        .calendar-day {
+            border: 1px solid #ddd;
+            padding: 10px;
+            min-height: 80px;
+            background-color: white;
+        }
+        
+        .calendar-day.empty {
+            background-color: #f9f9f9;
+        }
+        
+        .calendar-day.today {
+            background-color: #E3F2FD;
+        }
+        
+        .attendance-mark {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .payment-status.paid {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .payment-status.pending {
+            color: var(--danger-color);
+            font-weight: bold;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        
+        .whatsapp-group {
+            background-color: #25D366;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        .whatsapp-group i {
+            margin-right: 8px;
+        }
+        
+        .whatsapp-group:hover {
+            background-color: #128C7E;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+                justify-content: center;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul li {
+                margin: 5px 0;
+            }
+            
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <img id="library-logo" src="https://via.placeholder.com/50x50?text=SL" alt="Swastik Library Logo">
+                <h1>Swastik Library</h1>
+            </div>
+            <a href="https://youtube.com/@studyboy240?si=kt4t5INpjLm8kEYB" class="youtube-channel" target="_blank">
+                <i class="fab fa-youtube"></i> Subscribe to My Channel
+            </a>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#" id="home-link">Home</a></li>
+                <li><a href="#" id="register-link">Register</a></li>
+                <li><a href="#" id="student-login-link">Student Login</a></li>
+                <li><a href="#" id="admin-login-link">Admin Login</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="main-content container">
+        <!-- Home Section -->
+        <div id="home-section" class="home-content">
+            <h2>Welcome to Swastik Library</h2>
+            <p>Your gateway to knowledge and academic success. Manage your library activities with ease.</p>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-user-graduate"></i>
+                    <h3>Student Management</h3>
+                    <p>Easy registration and profile management for all students.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-calendar-check"></i>
+                    <h3>Attendance Tracking</h3>
+                    <p>Mark and view your daily attendance with our calendar system.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-rupee-sign"></i>
+                    <h3>Payment Management</h3>
+                    <p>Track your monthly payments and payment history.</p>
+                </div>
+            </div>
+            
+            <a href="https://chat.whatsapp.com/Ko7cm2FsPKR9ng4Ktxmvr0?mode=ac_c" class="whatsapp-group" target="_blank">
+                <i class="fab fa-whatsapp"></i> Join Our WhatsApp Group
+            </a>
+        </div>
+        
+        <!-- Register Section -->
+        <div id="register-section" class="register-section">
+            <h2>Student Registration</h2>
+            <div id="register-message" class="message" style="display: none;"></div>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="reg-name">Full Name</label>
+                    <input type="text" id="reg-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Email</label>
+                    <input type="email" id="reg-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-phone">Phone Number</label>
+                    <input type="tel" id="reg-phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-address">Address</label>
+                    <input type="text" id="reg-address" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-time-in">Preferred Time In</label>
+                    <input type="time" id="reg-time-in" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-time-out">Preferred Time Out</label>
+                    <input type="time" id="reg-time-out" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-confirm-password">Confirm Password</label>
+                    <input type="password" id="reg-confirm-password" required>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+            <p style="text-align: center; margin-top: 15px;">Already registered? <a href="#" id="register-to-student-login">Student Login</a></p>
+        </div>
+        
+        <!-- Student Login Section -->
+        <div id="student-login-section" class="login-section">
+            <h2>Student Login</h2>
+            <div id="student-login-message" class="message" style="display: none;"></div>
+            <form id="student-login-form">
+                <div class="form-group">
+                    <label for="student-email">Email</label>
+                    <input type="email" id="student-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="student-password">Password</label>
+                    <input type="password" id="student-password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <p style="text-align: center; margin-top: 15px;">Forgot password? <a href="#" id="student-reset-password">Reset Password</a></p>
+            <p style="text-align: center; margin-top: 15px;">Not registered? <a href="#" id="student-to-register">Register Here</a></p>
+        </div>
+        
+        <!-- Admin Login Section -->
+        <div id="admin-login-section" class="login-section">
+            <h2>Admin Login</h2>
+            <div id="admin-login-message" class="message" style="display: none;"></div>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-id">Admin ID</label>
+                    <input type="text" id="admin-id" required>
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Password</label>
+                    <input type="password" id="admin-password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <p style="text-align: center; margin-top: 15px;">Forgot password? <a href="#" id="admin-reset-password">Reset Password</a></p>
+        </div>
+        
+        <!-- Student Dashboard Section -->
+        <div id="student-dashboard-section" class="student-section">
+            <div class="student-header">
+                <h2>Welcome, <span id="student-display-name"></span></h2>
+                <button id="student-logout" class="btn-danger" style="width: auto; float: right;">Logout</button>
+            </div>
+            
+            <div class="student-tabs">
+                <button class="student-tab-btn active" data-tab="profile">Profile</button>
+                <button class="student-tab-btn" data-tab="attendance">Attendance</button>
+                <button class="student-tab-btn" data-tab="payments">Payments</button>
+                <button class="student-tab-btn" data-tab="change-password">Change Password</button>
+            </div>
+            
+            <div id="student-profile-tab" class="student-tab-content active-tab">
+                <h3>Your Profile Details</h3>
+                <table>
+                    <tr>
+                        <th>Field</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td id="profile-name"></td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td id="profile-email"></td>
+                    </tr>
+                    <tr>
+                        <td>Phone</td>
+                        <td id="profile-phone"></td>
+                    </tr>
+                    <tr>
+                        <td>Address</td>
+                        <td id="profile-address"></td>
+                    </tr>
+                    <tr>
+                        <td>Time In</td>
+                        <td id="profile-time-in"></td>
+                    </tr>
+                    <tr>
+                        <td>Time Out</td>
+                        <td id="profile-time-out"></td>
+                    </tr>
+                    <tr>
+                        <td>Registration Date</td>
+                        <td id="profile-reg-date"></td>
+                    </tr>
+                </table>
+                
+                <h3 style="margin-top: 20px;">Update Your Timings</h3>
+                <form id="update-timings-form">
+                    <div class="form-group">
+                        <label for="update-time-in">Time In</label>
+                        <input type="time" id="update-time-in" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="update-time-out">Time Out</label>
+                        <input type="time" id="update-time-out" required>
+                    </div>
+                    <button type="submit">Update Timings</button>
+                </form>
+                <div id="timings-update-message" class="message" style="display: none; margin-top: 15px;"></div>
+            </div>
+            
+            <div id="student-attendance-tab" class="student-tab-content">
+                <h3>Your Attendance</h3>
+                <div class="calendar" id="attendance-calendar">
+                    <!-- Calendar will be generated by JavaScript -->
+                </div>
+                <div id="attendance-stats">
+                    <p>Total Present: <span id="total-present">0</span> days</p>
+                    <p>Total Absent: <span id="total-absent">0</span> days</p>
+                </div>
+            </div>
+            
+            <div id="student-payments-tab" class="student-tab-content">
+                <h3>Your Payment History</h3>
+                <table id="payment-history-table">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Payment Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Payment history will be populated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <h3 style="margin-top: 20px;">Current Month Payment</h3>
+                <div id="current-payment-status" class="payment-status pending">
+                    July 2023: ₹500 - Pending
+                </div>
+                <button id="make-payment-btn" class="btn-secondary" style="margin-top: 15px;">Make Payment</button>
+                <div id="payment-message" class="message" style="display: none; margin-top: 15px;"></div>
+            </div>
+            
+            <div id="student-change-password-tab" class="student-tab-content">
+                <h3>Change Password</h3>
+                <form id="student-change-password-form">
+                    <div class="form-group">
+                        <label for="student-current-password">Current Password</label>
+                        <input type="password" id="student-current-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-new-password">New Password</label>
+                        <input type="password" id="student-new-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-confirm-new-password">Confirm New Password</label>
+                        <input type="password" id="student-confirm-new-password" required>
+                    </div>
+                    <button type="submit">Change Password</button>
+                </form>
+                <div id="student-password-change-message" class="message" style="display: none; margin-top: 15px;"></div>
+            </div>
+        </div>
+        
+        <!-- Admin Dashboard Section -->
+        <div id="admin-dashboard-section" class="admin-section">
+            <div class="admin-header">
+                <h2>Admin Dashboard</h2>
+                <button id="admin-logout" class="btn-danger" style="width: auto; float: right;">Logout</button>
+            </div>
+            
+            <div class="admin-tabs">
+                <button class="admin-tab-btn active" data-tab="students">Students</button>
+                <button class="admin-tab-btn" data-tab="attendance-admin">Attendance</button>
+                <button class="admin-tab-btn" data-tab="payments-admin">Payments</button>
+                <button class="admin-tab-btn" data-tab="admin-settings">Settings</button>
+            </div>
+            
+            <div id="admin-students-tab" class="admin-tab-content active-tab">
+                <h3>Manage Students</h3>
+                <button id="add-student-btn" class="btn-secondary" style="width: auto; margin-bottom: 15px;">Add New Student</button>
+                
+                <div id="add-student-form" style="display: none; margin-bottom: 20px;">
+                    <h4>Add New Student</h4>
+                    <form id="admin-add-student-form">
+                        <div class="form-group">
+                            <label for="admin-add-name">Full Name</label>
+                            <input type="text" id="admin-add-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-add-email">Email</label>
+                            <input type="email" id="admin-add-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-add-phone">Phone Number</label>
+                            <input type="tel" id="admin-add-phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-add-address">Address</label>
+                            <input type="text" id="admin-add-address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-add-time-in">Time In</label>
+                            <input type="time" id="admin-add-time-in" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-add-time-out">Time Out</label>
+                            <input type="time" id="admin-add-time-out" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-add-password">Password</label>
+                            <input type="password" id="admin-add-password" required>
+                        </div>
+                        <button type="submit" class="btn-secondary">Add Student</button>
+                        <button type="button" id="cancel-add-student" class="btn-danger" style="width: auto;">Cancel</button>
+                    </form>
+                    <div id="admin-add-student-message" class="message" style="display: none; margin-top: 15px;"></div>
+                </div>
+                
+                <table id="students-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Timings</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Students will be populated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div id="edit-student-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+                    <div style="background-color: white; padding: 20px; border-radius: 8px; width: 500px; max-width: 90%;">
+                        <h3>Edit Student Details</h3>
+                        <form id="edit-student-form">
+                            <input type="hidden" id="edit-student-id">
+                            <div class="form-group">
+                                <label for="edit-student-name">Full Name</label>
+                                <input type="text" id="edit-student-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-student-email">Email</label>
+                                <input type="email" id="edit-student-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-student-phone">Phone Number</label>
+                                <input type="tel" id="edit-student-phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-student-address">Address</label>
+                                <input type="text" id="edit-student-address" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-student-time-in">Time In</label>
+                                <input type="time" id="edit-student-time-in" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-student-time-out">Time Out</label>
+                                <input type="time" id="edit-student-time-out" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-student-status">Status</label>
+                                <select id="edit-student-status" required>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-secondary">Save Changes</button>
+                            <button type="button" id="cancel-edit-student" class="btn-danger" style="width: auto;">Cancel</button>
+                        </form>
+                        <div id="edit-student-message" class="message" style="display: none; margin-top: 15px;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="admin-attendance-tab" class="admin-tab-content">
+                <h3>Attendance Management</h3>
+                <div class="form-group">
+                    <label for="attendance-student-select">Select Student</label>
+                    <select id="attendance-student-select" required>
+                        <!-- Options will be populated by JavaScript -->
+                    </select>
+                </div>
+                
+                <div class="calendar" id="admin-attendance-calendar">
+                    <!-- Calendar will be generated by JavaScript -->
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <button id="mark-present-btn" class="btn-secondary" style="width: auto;">Mark Present for Today</button>
+                    <button id="mark-absent-btn" class="btn-danger" style="width: auto;">Mark Absent for Today</button>
+                </div>
+                
+                <div id="attendance-stats-admin" style="margin-top: 20px;">
+                    <h4>Attendance Statistics</h4>
+                    <p>Selected Student: <span id="selected-student-name">None</span></p>
+                    <p>Total Present: <span id="admin-total-present">0</span> days</p>
+                    <p>Total Absent: <span id="admin-total-absent">0</span> days</p>
+                    <p>Attendance Percentage: <span id="attendance-percentage">0</span>%</p>
+                </div>
+            </div>
+            
+            <div id="admin-payments-tab" class="admin-tab-content">
+                <h3>Payment Management</h3>
+                <div class="form-group">
+                    <label for="payment-student-select">Select Student</label>
+                    <select id="payment-student-select" required>
+                        <!-- Options will be populated by JavaScript -->
+                    </select>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <button id="mark-paid-btn" class="btn-secondary" style="width: auto;">Mark Current Month as Paid</button>
+                    <button id="mark-unpaid-btn" class="btn-danger" style="width: auto;">Mark Current Month as Unpaid</button>
+                </div>
+                
+                <h4 style="margin-top: 20px;">Payment History</h4>
+                <table id="admin-payment-history-table">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Payment Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Payment history will be populated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div id="payment-message-admin" class="message" style="display: none; margin-top: 15px;"></div>
+            </div>
+            
+            <div id="admin-settings-tab" class="admin-tab-content">
+                <h3>Admin Settings</h3>
+                
+                <div style="margin-bottom: 30px;">
+                    <h4>Change Admin Password</h4>
+                    <form id="admin-change-password-form">
+                        <div class="form-group">
+                            <label for="admin-current-password">Current Password</label>
+                            <input type="password" id="admin-current-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-new-password">New Password</label>
+                            <input type="password" id="admin-new-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-confirm-new-password">Confirm New Password</label>
+                            <input type="password" id="admin-confirm-new-password" required>
+                        </div>
+                        <button type="submit">Change Password</button>
+                    </form>
+                    <div id="admin-password-change-message" class="message" style="display: none; margin-top: 15px;"></div>
+                </div>
+                
+                <div>
+                    <h4>Change Library Logo</h4>
+                    <form id="change-logo-form">
+                        <div class="form-group">
+                            <label for="new-logo-url">New Logo URL</label>
+                            <input type="text" id="new-logo-url" required>
+                        </div>
+                        <button type="submit">Change Logo</button>
+                    </form>
+                    <div id="logo-change-message" class="message" style="display: none; margin-top: 15px;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Password Reset Section -->
+        <div id="password-reset-section" style="display: none;">
+            <h2>Reset Password</h2>
+            <div id="reset-message" class="message" style="display: none;"></div>
+            <form id="reset-password-form">
+                <div class="form-group">
+                    <label for="reset-email">Email</label>
+                    <input type="email" id="reset-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="reset-new-password">New Password</label>
+                    <input type="password" id="reset-new-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="reset-confirm-password">Confirm New Password</label>
+                    <input type="password" id="reset-confirm-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="reset-security-answer">Security Question: What is your mother's maiden name?</label>
+                    <input type="text" id="reset-security-answer" required>
+                </div>
+                <button type="submit">Reset Password</button>
+            </form>
+            <p style="text-align: center; margin-top: 15px;">Remember your password? <a href="#" id="reset-to-login">Login Here</a></p>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Swastik Library. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize data if not exists
+        if (!localStorage.getItem('swastikLibraryData')) {
+            const initialData = {
+                admin: {
+                    id: 'admin',
+                    password: bcrypt.hashSync('kumar@123', 10),
+                    email: 'nirbhaybhaipatel286@gmail.com'
+                },
+                students: [],
+                attendance: {},
+                payments: {},
+                settings: {
+                    logoUrl: 'https://via.placeholder.com/50x50?text=SL'
+                }
+            };
+            localStorage.setItem('swastikLibraryData', JSON.stringify(initialData));
+        }
+
+        // Get current data
+        function getLibraryData() {
+            return JSON.parse(localStorage.getItem('swastikLibraryData'));
+        }
+
+        // Save data
+        function saveLibraryData(data) {
+            localStorage.setItem('swastikLibraryData', JSON.stringify(data));
+        }
+
+        // Generate student ID
+        function generateStudentId() {
+            const data = getLibraryData();
+            return 'ST' + (data.students.length + 1000).toString();
+        }
+
+        // Show section
+        function showSection(sectionId) {
+            document.querySelectorAll('.main-content > div').forEach(div => {
+                div.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        // Show message
+        function showMessage(elementId, message, type) {
+            const messageElement = document.getElementById(elementId);
+            messageElement.textContent = message;
+            messageElement.className = `message ${type}`;
+            messageElement.style.display = 'block';
+            
+            setTimeout(() => {
+                messageElement.style.display = 'none';
+            }, 5000);
+        }
+
+        // Format date
+        function formatDate(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        // Get current month and year
+        function getCurrentMonthYear() {
+            const date = new Date();
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            return `${months[date.getMonth()]} ${date.getFullYear()}`;
+        }
+
+        // Generate calendar
+        function generateCalendar(containerId, year, month, attendanceData) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            // Create calendar header
+            const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            daysOfWeek.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-header';
+                dayHeader.textContent = day;
+                container.appendChild(dayHeader);
+            });
+            
+            // Get first day of month and total days
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-day empty';
+                container.appendChild(emptyCell);
+            }
+            
+            // Add cells for each day of the month
+            const today = new Date();
+            const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'calendar-day';
+                
+                if (isCurrentMonth && day === today.getDate()) {
+                    dayCell.classList.add('today');
+                }
+                
+                dayCell.textContent = day;
+                
+                // Check if there's attendance data for this day
+                const dateStr = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                if (attendanceData && attendanceData[dateStr]) {
+                    const attendanceMark = document.createElement('span');
+                    attendanceMark.className = 'attendance-mark';
+                    attendanceMark.title = attendanceData[dateStr] === 'present' ? 'Present' : 'Absent';
+                    attendanceMark.textContent = attendanceData[dateStr] === 'present' ? 'P' : 'A';
+                    dayCell.appendChild(attendanceMark);
+                }
+                
+                container.appendChild(dayCell);
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in footer
+            document.querySelector('footer p').textContent = `© ${new Date().getFullYear()} Swastik Library. All rights reserved.`;
+            
+            // Set library logo
+            const libraryData = getLibraryData();
+            document.getElementById('library-logo').src = libraryData.settings.logoUrl;
+            
+            // Navigation event listeners
+            document.getElementById('home-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('home-section');
+            });
+            
+            document.getElementById('register-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('register-section');
+            });
+            
+            document.getElementById('student-login-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('student-login-section');
+            });
+            
+            document.getElementById('admin-login-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('admin-login-section');
+            });
+            
+            document.getElementById('register-to-student-login').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('student-login-section');
+            });
+            
+            document.getElementById('student-to-register').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('register-section');
+            });
+            
+            // Register form submission
+            document.getElementById('register-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('reg-name').value;
+                const email = document.getElementById('reg-email').value;
+                const phone = document.getElementById('reg-phone').value;
+                const address = document.getElementById('reg-address').value;
+                const timeIn = document.getElementById('reg-time-in').value;
+                const timeOut = document.getElementById('reg-time-out').value;
+                const password = document.getElementById('reg-password').value;
+                const confirmPassword = document.getElementById('reg-confirm-password').value;
+                
+                if (password !== confirmPassword) {
+                    showMessage('register-message', 'Passwords do not match', 'error');
+                    return;
+                }
+                
+                const libraryData = getLibraryData();
+                
+                // Check if email already exists
+                if (libraryData.students.some(student => student.email === email)) {
+                    showMessage('register-message', 'Email already registered', 'error');
+                    return;
+                }
+                
+                // Create new student
+                const newStudent = {
+                    id: generateStudentId(),
+                    name,
+                    email,
+                    phone,
+                    address,
+                    timeIn,
+                    timeOut,
+                    password: bcrypt.hashSync(password, 10),
+                    registrationDate: formatDate(new Date()),
+                    status: 'active',
+                    securityAnswer: 'test' // In a real app, this would be collected from the user
+                };
+                
+                libraryData.students.push(newStudent);
+                
+                // Initialize attendance and payment records
+                const currentDate = new Date();
+                const currentMonthYear = getCurrentMonthYear();
+                
+                if (!libraryData.attendance[newStudent.id]) {
+                    libraryData.attendance[newStudent.id] = {};
+                }
+                
+                if (!libraryData.payments[newStudent.id]) {
+                    libraryData.payments[newStudent.id] = {};
+                    libraryData.payments[newStudent.id][currentMonthYear] = {
+                        amount: 500,
+                        status: 'pending',
+                        paymentDate: null
+                    };
+                }
+                
+                saveLibraryData(libraryData);
+                
+                // In a real application, you would send an email to admin here
+                console.log(`New student registered: ${name}. Email notification would be sent to admin.`);
+                
+                showMessage('register-message', 'Registration successful! You can now login.', 'success');
+                document.getElementById('register-form').reset();
+            });
+            
+            // Student login
+            document.getElementById('student-login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('student-email').value;
+                const password = document.getElementById('student-password').value;
+                
+                const libraryData = getLibraryData();
+                const student = libraryData.students.find(s => s.email === email);
+                
+                if (!student) {
+                    showMessage('student-login-message', 'Invalid email or password', 'error');
+                    return;
+                }
+                
+                if (!bcrypt.compareSync(password, student.password)) {
+                    showMessage('student-login-message', 'Invalid email or password', 'error');
+                    return;
+                }
+                
+                if (student.status !== 'active') {
+                    showMessage('student-login-message', 'Your account is not active', 'error');
+                    return;
+                }
+                
+                // Login successful
+                localStorage.setItem('currentStudent', JSON.stringify(student));
+                loadStudentDashboard(student);
+                showSection('student-dashboard-section');
+                document.getElementById('student-login-form').reset();
+            });
+            
+            // Admin login
+            document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const adminId = document.getElementById('admin-id').value;
+                const password = document.getElementById('admin-password').value;
+                
+                const libraryData = getLibraryData();
+                
+                if (adminId !== libraryData.admin.id) {
+                    showMessage('admin-login-message', 'Invalid admin ID or password', 'error');
+                    return;
+                }
+                
+                if (!bcrypt.compareSync(password, libraryData.admin.password)) {
+                    showMessage('admin-login-message', 'Invalid admin ID or password', 'error');
+                    return;
+                }
+                
+                // Login successful
+                localStorage.setItem('currentAdmin', JSON.stringify(libraryData.admin));
+                loadAdminDashboard();
+                showSection('admin-dashboard-section');
+                document.getElementById('admin-login-form').reset();
+            });
+            
+            // Password reset links
+            document.getElementById('student-reset-password').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('password-reset-section').style.display = 'block';
+                document.getElementById('student-login-section').style.display = 'none';
+            });
+            
+            document.getElementById('admin-reset-password').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('password-reset-section').style.display = 'block';
+                document.getElementById('admin-login-section').style.display = 'none';
+            });
+            
+            document.getElementById('reset-to-login').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('password-reset-section').style.display = 'none';
+                showSection('student-login-section');
+            });
+            
+            // Password reset form
+            document.getElementById('reset-password-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('reset-email').value;
+                const newPassword = document.getElementById('reset-new-password').value;
+                const confirmPassword = document.getElementById('reset-confirm-password').value;
+                const securityAnswer = document.getElementById('reset-security-answer').value;
+                
+                if (newPassword !== confirmPassword) {
+                    showMessage('reset-message', 'Passwords do not match', 'error');
+                    return;
+                }
+                
+                const libraryData = getLibraryData();
+                
+                // Check if it's admin
+                if (email === libraryData.admin.email) {
+                    if (securityAnswer.toLowerCase() !== 'test') { // In real app, this would be the actual security answer
+                        showMessage('reset-message', 'Incorrect security answer', 'error');
+                        return;
+                    }
+                    
+                    libraryData.admin.password = bcrypt.hashSync(newPassword, 10);
+                    saveLibraryData(libraryData);
+                    showMessage('reset-message', 'Admin password reset successfully', 'success');
+                    document.getElementById('reset-password-form').reset();
+                    return;
+                }
+                
+                // Check if it's a student
+                const student = libraryData.students.find(s => s.email === email);
+                if (!student) {
+                    showMessage('reset-message', 'Email not found', 'error');
+                    return;
+                }
+                
+                if (securityAnswer.toLowerCase() !== student.securityAnswer.toLowerCase()) {
+                    showMessage('reset-message', 'Incorrect security answer', 'error');
+                    return;
+                }
+                
+                student.password = bcrypt.hashSync(newPassword, 10);
+                saveLibraryData(libraryData);
+                showMessage('reset-message', 'Password reset successfully', 'success');
+                document.getElementById('reset-password-form').reset();
+            });
+            
+            // Load student dashboard
+            function loadStudentDashboard(student) {
+                document.getElementById('student-display-name').textContent = student.name;
+                
+                // Profile tab
+                document.getElementById('profile-name').textContent = student.name;
+                document.getElementById('profile-email').textContent = student.email;
+                document.getElementById('profile-phone').textContent = student.phone;
+                document.getElementById('profile-address').textContent = student.address;
+                document.getElementById('profile-time-in').textContent = student.timeIn;
+                document.getElementById('profile-time-out').textContent = student.timeOut;
+                document.getElementById('profile-reg-date').textContent = student.registrationDate;
+                
+                document.getElementById('update-time-in').value = student.timeIn;
+                document.getElementById('update-time-out').value = student.timeOut;
+                
+                // Attendance tab
+                const currentDate = new Date();
+                generateCalendar('attendance-calendar', currentDate.getFullYear(), currentDate.getMonth(), libraryData.attendance[student.id]);
+                
+                // Calculate attendance stats
+                let presentDays = 0;
+                let absentDays = 0;
+                
+                if (libraryData.attendance[student.id]) {
+                    for (const date in libraryData.attendance[student.id]) {
+                        if (libraryData.attendance[student.id][date] === 'present') {
+                            presentDays++;
+                        } else if (libraryData.attendance[student.id][date] === 'absent') {
+                            absentDays++;
+                        }
+                    }
+                }
+                
+                document.getElementById('total-present').textContent = presentDays;
+                document.getElementById('total-absent').textContent = absentDays;
+                
+                // Payments tab
+                const paymentHistoryTable = document.getElementById('payment-history-table').getElementsByTagName('tbody')[0];
+                paymentHistoryTable.innerHTML = '';
+                
+                if (libraryData.payments[student.id]) {
+                    for (const monthYear in libraryData.payments[student.id]) {
+                        const payment = libraryData.payments[student.id][monthYear];
+                        const row = paymentHistoryTable.insertRow();
+                        
+                        row.insertCell(0).textContent = monthYear;
+                        row.insertCell(1).textContent = `₹${payment.amount}`;
+                        
+                        const statusCell = row.insertCell(2);
+                        statusCell.textContent = payment.status;
+                        statusCell.className = `payment-status ${payment.status}`;
+                        
+                        row.insertCell(3).textContent = payment.paymentDate || 'N/A';
+                    }
+                }
+                
+                // Current payment status
+                const currentMonthYear = getCurrentMonthYear();
+                let currentPaymentStatus = 'pending';
+                let currentPaymentDate = null;
+                
+                if (libraryData.payments[student.id] && libraryData.payments[student.id][currentMonthYear]) {
+                    currentPaymentStatus = libraryData.payments[student.id][currentMonthYear].status;
+                    currentPaymentDate = libraryData.payments[student.id][currentMonthYear].paymentDate;
+                }
+                
+                const currentPaymentElement = document.getElementById('current-payment-status');
+                currentPaymentElement.textContent = `${currentMonthYear}: ₹500 - ${currentPaymentStatus.charAt(0).toUpperCase() + currentPaymentStatus.slice(1)}`;
+                currentPaymentElement.className = `payment-status ${currentPaymentStatus}`;
+            }
+            
+            // Student dashboard tabs
+            document.querySelectorAll('.student-tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.student-tab-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    document.querySelectorAll('.student-tab-content').forEach(content => {
+                        content.classList.remove('active-tab');
+                    });
+                    
+                    document.getElementById(`student-${this.dataset.tab}-tab`).classList.add('active-tab');
+                });
+            });
+            
+            // Update student timings
+            document.getElementById('update-timings-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const timeIn = document.getElementById('update-time-in').value;
+                const timeOut = document.getElementById('update-time-out').value;
+                
+                const studentData = JSON.parse(localStorage.getItem('currentStudent'));
+                const libraryData = getLibraryData();
+                
+                const studentIndex = libraryData.students.findIndex(s => s.id === studentData.id);
+                if (studentIndex !== -1) {
+                    libraryData.students[studentIndex].timeIn = timeIn;
+                    libraryData.students[studentIndex].timeOut = timeOut;
+                    saveLibraryData(libraryData);
+                    
+                    // Update local student data
+                    studentData.timeIn = timeIn;
+                    studentData.timeOut = timeOut;
+                    localStorage.setItem('currentStudent', JSON.stringify(studentData));
+                    
+                    // Update displayed values
+                    document.getElementById('profile-time-in').textContent = timeIn;
+                    document.getElementById('profile-time-out').textContent = timeOut;
+                    
+                    showMessage('timings-update-message', 'Timings updated successfully', 'success');
+                }
+            });
+            
+            // Make payment button
+            document.getElementById('make-payment-btn').addEventListener('click', function() {
+                const studentData = JSON.parse(localStorage.getItem('currentStudent'));
+                const libraryData = getLibraryData();
+                const currentMonthYear = getCurrentMonthYear();
+                
+                if (libraryData.payments[studentData.id] && libraryData.payments[studentData.id][currentMonthYear]) {
+                    libraryData.payments[studentData.id][currentMonthYear].status = 'paid';
+                    libraryData.payments[studentData.id][currentMonthYear].paymentDate = formatDate(new Date());
+                    saveLibraryData(libraryData);
+                    
+                    // Update UI
+                    const currentPaymentElement = document.getElementById('current-payment-status');
+                    currentPaymentElement.textContent = `${currentMonthYear}: ₹500 - Paid`;
+                    currentPaymentElement.className = 'payment-status paid';
+                    
+                    // Add to payment history table
+                    const paymentHistoryTable = document.getElementById('payment-history-table').getElementsByTagName('tbody')[0];
+                    const row = paymentHistoryTable.insertRow(0);
+                    
+                    row.insertCell(0).textContent = currentMonthYear;
+                    row.insertCell(1).textContent = '₹500';
+                    
+                    const statusCell = row.insertCell(2);
+                    statusCell.textContent = 'paid';
+                    statusCell.className = 'payment-status paid';
+                    
+                    row.insertCell(3).textContent = formatDate(new Date());
+                    
+                    showMessage('payment-message', 'Payment marked as paid', 'success');
+                }
+            });
+            
+            // Student change password
+            document.getElementById('student-change-password-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const currentPassword = document.getElementById('student-current-password').value;
+                const newPassword = document.getElementById('student-new-password').value;
+                const confirmNewPassword = document.getElementById('student-confirm-new-password').value;
+                
+                if (newPassword !== confirmNewPassword) {
+                    showMessage('student-password-change-message', 'New passwords do not match', 'error');
+                    return;
+                }
+                
+                const studentData = JSON.parse(localStorage.getItem('currentStudent'));
+                const libraryData = getLibraryData();
+                
+                const studentIndex = libraryData.students.findIndex(s => s.id === studentData.id);
+                if (studentIndex === -1) {
+                    showMessage('student-password-change-message', 'Student not found', 'error');
+                    return;
+                }
+                
+                if (!bcrypt.compareSync(currentPassword, libraryData.students[studentIndex].password)) {
+                    showMessage('student-password-change-message', 'Current password is incorrect', 'error');
+                    return;
+                }
+                
+                libraryData.students[studentIndex].password = bcrypt.hashSync(newPassword, 10);
+                saveLibraryData(libraryData);
+                
+                // Update local student data
+                studentData.password = libraryData.students[studentIndex].password;
+                localStorage.setItem('currentStudent', JSON.stringify(studentData));
+                
+                showMessage('student-password-change-message', 'Password changed successfully', 'success');
+                document.getElementById('student-change-password-form').reset();
+            });
+            
+            // Student logout
+            document.getElementById('student-logout').addEventListener('click', function() {
+                localStorage.removeItem('currentStudent');
+                showSection('home-section');
+            });
+            
+            // Load admin dashboard
+            function loadAdminDashboard() {
+                const libraryData = getLibraryData();
+                
+                // Students tab
+                populateStudentsTable();
+                
+                // Attendance tab
+                const studentSelect = document.getElementById('attendance-student-select');
+                studentSelect.innerHTML = '<option value="">Select Student</option>';
+                
+                libraryData.students.forEach(student => {
+                    if (student.status === 'active') {
+                        const option = document.createElement('option');
+                        option.value = student.id;
+                        option.textContent = `${student.name} (${student.id})`;
+                        studentSelect.appendChild(option);
+                    }
+                });
+                
+                // Generate calendar for current month
+                const currentDate = new Date();
+                generateCalendar('admin-attendance-calendar', currentDate.getFullYear(), currentDate.getMonth(), {});
+                
+                // Payments tab
+                const paymentStudentSelect = document.getElementById('payment-student-select');
+                paymentStudentSelect.innerHTML = '<option value="">Select Student</option>';
+                
+                libraryData.students.forEach(student => {
+                    const option = document.createElement('option');
+                    option.value = student.id;
+                    option.textContent = `${student.name} (${student.id})`;
+                    paymentStudentSelect.appendChild(option);
+                });
+                
+                // Populate payment history table when student is selected
+                paymentStudentSelect.addEventListener('change', function() {
+                    const studentId = this.value;
+                    const paymentHistoryTable = document.getElementById('admin-payment-history-table').getElementsByTagName('tbody')[0];
+                    paymentHistoryTable.innerHTML = '';
+                    
+                    if (studentId && libraryData.payments[studentId]) {
+                        for (const monthYear in libraryData.payments[studentId]) {
+                            const payment = libraryData.payments[studentId][monthYear];
+                            const row = paymentHistoryTable.insertRow();
+                            
+                            row.insertCell(0).textContent = monthYear;
+                            row.insertCell(1).textContent = `₹${payment.amount}`;
+                            
+                            const statusCell = row.insertCell(2);
+                            statusCell.textContent = payment.status;
+                            statusCell.className = `payment-status ${payment.status}`;
+                            
+                            row.insertCell(3).textContent = payment.paymentDate || 'N/A';
+                        }
+                    }
+                });
+            }
+            
+            // Populate students table
+            function populateStudentsTable() {
+                const libraryData = getLibraryData();
+                const studentsTable = document.getElementById('students-table').getElementsByTagName('tbody')[0];
+                studentsTable.innerHTML = '';
+                
+                libraryData.students.forEach(student => {
+                    const row = studentsTable.insertRow();
+                    
+                    row.insertCell(0).textContent = student.id;
+                    row.insertCell(1).textContent = student.name;
+                    row.insertCell(2).textContent = student.email;
+                    row.insertCell(3).textContent = student.phone;
+                    row.insertCell(4).textContent = `${student.timeIn} - ${student.timeOut}`;
+                    
+                    const statusCell = row.insertCell(5);
+                    statusCell.textContent = student.status;
+                    statusCell.className = student.status === 'active' ? 'active' : 'inactive';
+                    
+                    const actionsCell = row.insertCell(6);
+                    actionsCell.className = 'action-buttons';
+                    
+                    const editBtn = document.createElement('button');
+                    editBtn.textContent = 'Edit';
+                    editBtn.className = 'action-btn btn-secondary';
+                    editBtn.addEventListener('click', () => openEditStudentModal(student));
+                    actionsCell.appendChild(editBtn);
+                    
+                    const toggleBtn = document.createElement('button');
+                    toggleBtn.textContent = student.status === 'active' ? 'Deactivate' : 'Activate';
+                    toggleBtn.className = student.status === 'active' ? 'action-btn btn-danger' : 'action-btn btn-secondary';
+                    toggleBtn.addEventListener('click', () => toggleStudentStatus(student.id));
+                    actionsCell.appendChild(toggleBtn);
+                });
+            }
+            
+            // Admin dashboard tabs
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    document.querySelectorAll('.admin-tab-content').forEach(content => {
+                        content.classList.remove('active-tab');
+                    });
+                    
+                    document.getElementById(`admin-${this.dataset.tab}-tab`).classList.add('active-tab');
+                });
+            });
+            
+            // Add student button
+            document.getElementById('add-student-btn').addEventListener('click', function() {
+                document.getElementById('add-student-form').style.display = 'block';
+            });
+            
+            // Cancel add student
+            document.getElementById('cancel-add-student').addEventListener('click', function() {
+                document.getElementById('add-student-form').style.display = 'none';
+                document.getElementById('admin-add-student-form').reset();
+            });
+            
+            // Admin add student form
+            document.getElementById('admin-add-student-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('admin-add-name').value;
+                const email = document.getElementById('admin-add-email').value;
+                const phone = document.getElementById('admin-add-phone').value;
+                const address = document.getElementById('admin-add-address').value;
+                const timeIn = document.getElementById('admin-add-time-in').value;
+                const timeOut = document.getElementById('admin-add-time-out').value;
+                const password = document.getElementById('admin-add-password').value;
+                
+                const libraryData = getLibraryData();
+                
+                // Check if email already exists
+                if (libraryData.students.some(student => student.email === email)) {
+                    showMessage('admin-add-student-message', 'Email already registered', 'error');
+                    return;
+                }
+                
+                // Create new student
+                const newStudent = {
+                    id: generateStudentId(),
+                    name,
+                    email,
+                    phone,
+                    address,
+                    timeIn,
+                    timeOut,
+                    password: bcrypt.hashSync(password, 10),
+                    registrationDate: formatDate(new Date()),
+                    status: 'active',
+                    securityAnswer: 'test' // In a real app, this would be collected from the user
+                };
+                
+                libraryData.students.push(newStudent);
+                
+                // Initialize attendance and payment records
+                const currentDate = new Date();
+                const currentMonthYear = getCurrentMonthYear();
+                
+                if (!libraryData.attendance[newStudent.id]) {
+                    libraryData.attendance[newStudent.id] = {};
+                }
+                
+                if (!libraryData.payments[newStudent.id]) {
+                    libraryData.payments[newStudent.id] = {};
+                    libraryData.payments[newStudent.id][currentMonthYear] = {
+                        amount: 500,
+                        status: 'pending',
+                        paymentDate: null
+                    };
+                }
+                
+                saveLibraryData(libraryData);
+                
+                showMessage('admin-add-student-message', 'Student added successfully', 'success');
+                document.getElementById('admin-add-student-form').reset();
+                document.getElementById('add-student-form').style.display = 'none';
+                
+                // Refresh students table
+                populateStudentsTable();
+            });
+            
+            // Open edit student modal
+            function openEditStudentModal(student) {
+                document.getElementById('edit-student-id').value = student.id;
+                document.getElementById('edit-student-name').value = student.name;
+                document.getElementById('edit-student-email').value = student.email;
+                document.getElementById('edit-student-phone').value = student.phone;
+                document.getElementById('edit-student-address').value = student.address;
+                document.getElementById('edit-student-time-in').value = student.timeIn;
+                document.getElementById('edit-student-time-out').value = student.timeOut;
+                document.getElementById('edit-student-status').value = student.status;
+                
+                document.getElementById('edit-student-modal').style.display = 'flex';
+            }
+            
+            // Cancel edit student
+            document.getElementById('cancel-edit-student').addEventListener('click', function() {
+                document.getElementById('edit-student-modal').style.display = 'none';
+            });
+            
+            // Edit student form
+            document.getElementById('edit-student-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const studentId = document.getElementById('edit-student-id').value;
+                const name = document.getElementById('edit-student-name').value;
+                const email = document.getElementById('edit-student-email').value;
+                const phone = document.getElementById('edit-student-phone').value;
+                const address = document.getElementById('edit-student-address').value;
+                const timeIn = document.getElementById('edit-student-time-in').value;
+                const timeOut = document.getElementById('edit-student-time-out').value;
+                const status = document.getElementById('edit-student-status').value;
+                
+                const libraryData = getLibraryData();
+                const studentIndex = libraryData.students.findIndex(s => s.id === studentId);
+                
+                if (studentIndex === -1) {
+                    showMessage('edit-student-message', 'Student not found', 'error');
+                    return;
+                }
+                
+                // Check if email is being changed to one that already exists
+                if (email !== libraryData.students[studentIndex].email && 
+                    libraryData.students.some(s => s.email === email)) {
+                    showMessage('edit-student-message', 'Email already in use by another student', 'error');
+                    return;
+                }
+                
+                // Update student details
+                libraryData.students[studentIndex].name = name;
+                libraryData.students[studentIndex].email = email;
+                libraryData.students[studentIndex].phone = phone;
+                libraryData.students[studentIndex].address = address;
+                libraryData.students[studentIndex].timeIn = timeIn;
+                libraryData.students[studentIndex].timeOut = timeOut;
+                libraryData.students[studentIndex].status = status;
+                
+                saveLibraryData(libraryData);
+                
+                showMessage('edit-student-message', 'Student details updated successfully', 'success');
+                
+                // Refresh students table
+                populateStudentsTable();
+                
+                // Close modal after a short delay
+                setTimeout(() => {
+                    document.getElementById('edit-student-modal').style.display = 'none';
+                }, 1500);
+            });
+            
+            // Toggle student status
+            function toggleStudentStatus(studentId) {
+                const libraryData = getLibraryData();
+                const studentIndex = libraryData.students.findIndex(s => s.id === studentId);
+                
+                if (studentIndex !== -1) {
+                    libraryData.students[studentIndex].status = 
+                        libraryData.students[studentIndex].status === 'active' ? 'inactive' : 'active';
+                    
+                    saveLibraryData(libraryData);
+                    populateStudentsTable();
+                }
+            }
+            
+            // Attendance student select change
+            document.getElementById('attendance-student-select').addEventListener('change', function() {
+                const studentId = this.value;
+                const libraryData = getLibraryData();
+                const student = libraryData.students.find(s => s.id === studentId);
+                
+                if (student) {
+                    document.getElementById('selected-student-name').textContent = student.name;
+                    
+                    // Calculate attendance stats
+                    let presentDays = 0;
+                    let absentDays = 0;
+                    
+                    if (libraryData.attendance[studentId]) {
+                        for (const date in libraryData.attendance[studentId]) {
+                            if (libraryData.attendance[studentId][date] === 'present') {
+                                presentDays++;
+                            } else if (libraryData.attendance[studentId][date] === 'absent') {
+                                absentDays++;
+                            }
+                        }
+                    }
+                    
+                    document.getElementById('admin-total-present').textContent = presentDays;
+                    document.getElementById('admin-total-absent').textContent = absentDays;
+                    
+                    const totalDays = presentDays + absentDays;
+                    const percentage = totalDays > 0 ? Math.round((presentDays / totalDays) * 100) : 0;
+                    document.getElementById('attendance-percentage').textContent = percentage;
+                    
+                    // Generate calendar with attendance data
+                    const currentDate = new Date();
+                    generateCalendar('admin-attendance-calendar', currentDate.getFullYear(), currentDate.getMonth(), libraryData.attendance[studentId]);
+                } else {
+                    document.getElementById('selected-student-name').textContent = 'None';
+                    document.getElementById('admin-total-present').textContent = '0';
+                    document.getElementById('admin-total-absent').textContent = '0';
+                    document.getElementById('attendance-percentage').textContent = '0';
+                    
+                    const currentDate = new Date();
+                    generateCalendar('admin-attendance-calendar', currentDate.getFullYear(), currentDate.getMonth(), {});
+                }
+            });
+            
+            // Mark present button
+            document.getElementById('mark-present-btn').addEventListener('click', function() {
+                const studentId = document.getElementById('attendance-student-select').value;
+                if (!studentId) {
+                    alert('Please select a student first');
+                    return;
+                }
+                
+                const today = formatDate(new Date());
+                const libraryData = getLibraryData();
+                
+                if (!libraryData.attendance[studentId]) {
+                    libraryData.attendance[studentId] = {};
+                }
+                
+                libraryData.attendance[studentId][today] = 'present';
+                saveLibraryData(libraryData);
+                
+                // Refresh calendar and stats
+                document.getElementById('attendance-student-select').dispatchEvent(new Event('change'));
+            });
+            
+            // Mark absent button
+            document.getElementById('mark-absent-btn').addEventListener('click', function() {
+                const studentId = document.getElementById('attendance-student-select').value;
+                if (!studentId) {
+                    alert('Please select a student first');
+                    return;
+                }
+                
+                const today = formatDate(new Date());
+                const libraryData = getLibraryData();
+                
+                if (!libraryData.attendance[studentId]) {
+                    libraryData.attendance[studentId] = {};
+                }
+                
+                libraryData.attendance[studentId][today] = 'absent';
+                saveLibraryData(libraryData);
+                
+                // Refresh calendar and stats
+                document.getElementById('attendance-student-select').dispatchEvent(new Event('change'));
+            });
+            
+            // Mark payment as paid
+            document.getElementById('mark-paid-btn').addEventListener('click', function() {
+                const studentId = document.getElementById('payment-student-select').value;
+                if (!studentId) {
+                    alert('Please select a student first');
+                    return;
+                }
+                
+                const currentMonthYear = getCurrentMonthYear();
+                const libraryData = getLibraryData();
+                
+                if (!libraryData.payments[studentId]) {
+                    libraryData.payments[studentId] = {};
+                }
+                
+                if (!libraryData.payments[studentId][currentMonthYear]) {
+                    libraryData.payments[studentId][currentMonthYear] = {
+                        amount: 500,
+                        status: 'pending',
+                        paymentDate: null
+                    };
+                }
+                
+                libraryData.payments[studentId][currentMonthYear].status = 'paid';
+                libraryData.payments[studentId][currentMonthYear].paymentDate = formatDate(new Date());
+                saveLibraryData(libraryData);
+                
+                showMessage('payment-message-admin', 'Payment marked as paid', 'success');
+                
+                // Refresh payment history
+                document.getElementById('payment-student-select').dispatchEvent(new Event('change'));
+            });
+            
+            // Mark payment as unpaid
+            document.getElementById('mark-unpaid-btn').addEventListener('click', function() {
+                const studentId = document.getElementById('payment-student-select').value;
+                if (!studentId) {
+                    alert('Please select a student first');
+                    return;
+                }
+                
+                const currentMonthYear = getCurrentMonthYear();
+                const libraryData = getLibraryData();
+                
+                if (!libraryData.payments[studentId]) {
+                    libraryData.payments[studentId] = {};
+                }
+                
+                if (!libraryData.payments[studentId][currentMonthYear]) {
+                    libraryData.payments[studentId][currentMonthYear] = {
+                        amount: 500,
+                        status: 'pending',
+                        paymentDate: null
+                    };
+                }
+                
+                libraryData.payments[studentId][currentMonthYear].status = 'pending';
+                libraryData.payments[studentId][currentMonthYear].paymentDate = null;
+                saveLibraryData(libraryData);
+                
+                showMessage('payment-message-admin', 'Payment marked as unpaid', 'success');
+                
+                // Refresh payment history
+                document.getElementById('payment-student-select').dispatchEvent(new Event('change'));
+            });
+            
+            // Admin change password
+            document.getElementById('admin-change-password-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const currentPassword = document.getElementById('admin-current-password').value;
+                const newPassword = document.getElementById('admin-new-password').value;
+                const confirmNewPassword = document.getElementById('admin-confirm-new-password').value;
+                
+                if (newPassword !== confirmNewPassword) {
+                    showMessage('admin-password-change-message', 'New passwords do not match', 'error');
+                    return;
+                }
+                
+                const libraryData = getLibraryData();
+                
+                if (!bcrypt.compareSync(currentPassword, libraryData.admin.password)) {
+                    showMessage('admin-password-change-message', 'Current password is incorrect', 'error');
+                    return;
+                }
+                
+                libraryData.admin.password = bcrypt.hashSync(newPassword, 10);
+                saveLibraryData(libraryData);
+                
+                showMessage('admin-password-change-message', 'Admin password changed successfully', 'success');
+                document.getElementById('admin-change-password-form').reset();
+            });
+            
+            // Change library logo
+            document.getElementById('change-logo-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const newLogoUrl = document.getElementById('new-logo-url').value;
+                
+                const libraryData = getLibraryData();
+                libraryData.settings.logoUrl = newLogoUrl;
+                saveLibraryData(libraryData);
+                
+                document.getElementById('library-logo').src = newLogoUrl;
+                showMessage('logo-change-message', 'Library logo updated successfully', 'success');
+                document.getElementById('change-logo-form').reset();
+            });
+            
+            // Admin logout
+            document.getElementById('admin-logout').addEventListener('click', function() {
+                localStorage.removeItem('currentAdmin');
+                showSection('home-section');
+            });
+            
+            // Check if student or admin is already logged in
+            if (localStorage.getItem('currentStudent')) {
+                const student = JSON.parse(localStorage.getItem('currentStudent'));
+                loadStudentDashboard(student);
+                showSection('student-dashboard-section');
+            } else if (localStorage.getItem('currentAdmin')) {
+                loadAdminDashboard();
+                showSection('admin-dashboard-section');
+            } else {
+                showSection('home-section');
+            }
+        });
+    </script>
+</body>
+</html>
